@@ -22,7 +22,7 @@ const Wechat = {}
 Wechat.appendUserHashWhitelist = function (data, callback) {
   data.whitelist.push('wxid')
   data.whitelist.push('wxpic')
-  return setImmediate(callback, null, data)
+  return callback(null, data)
 }
 Wechat.getStrategy = function (strategies, callback) {
   try {
@@ -47,10 +47,10 @@ Wechat.getStrategy = function (strategies, callback) {
               if (res) {
                 return done('[[error:sso-multiple-association]]', false)
               } else {
-                winston.info('[SSO-WeChat-web]User is logged.Binding.')
+                winston.info('[SSO-WeChat-web]User is logged.Associating.')
                 user.setUserField(req.user.uid, 'wxid', profile.openid)
                 db.setObjectField('wxid:uid', profile.openid, req.user.uid)
-                winston.info(`[SSO-WeChat-web] ${req.user.uid} is binded.(openid is ${profile.openid} and nickname is ${profile.nickname}`)
+                winston.info(`[SSO-WeChat-web] ${req.user.uid} is Associated.(openid is ${profile.openid} and nickname is ${profile.nickname}`)
 
                 // Set Picture
                 const picture = profile.headimgurl.replace('http://', 'https://')
@@ -67,11 +67,13 @@ Wechat.getStrategy = function (strategies, callback) {
                 return done(err)
               }
               // Update Avatar Picture while user log-in
-              User.getUserField(user.uid, ['picture', 'wxpic'], function (userData) {
+              User.getUserFields(user.uid, ['picture', 'wxpic'], function (err, userData) {
+                if (err) {
+                  return done(err)
+                }
                 // firstly, update wechat Avatar Url
                 User.setUserField(user.uid, 'wxpic', picture)
-
-                if (userData[0] === userData[1]) {
+                if (userData['picture'] === userData['wxpic']) {
                   // if user use the wechat avatar currently, we update it.
                   User.setUserField(user.uid, 'picture', picture)
                 }
@@ -86,7 +88,7 @@ Wechat.getStrategy = function (strategies, callback) {
                   if (err) {
                     return done(err)
                   } else {
-                    winston.info('[sso-wechat-web] user:' + user.uid + ' is logged via wechat.(openid is ' + profile.openid + ' and nickname is ' + profile.nickname + ')')
+                    winston.info('[sso-wechat-web] user:' + user.uid + ' is logged in via wechat.(openid is ' + profile.openid + ' and nickname is ' + profile.nickname + ')')
                     done(null, user)
                   }
                 })
