@@ -65,20 +65,31 @@ Wechat.getStrategy = function (strategies, callback) {
               if (err) {
                 return done(err)
               }
-              // Require collection of email
-              if (email.endsWith('@wx.qq.com')) {
-                req.session.registration = req.session.registration || {}
-                req.session.registration.uid = user.uid
-                req.session.registration.wxid = profile.openid
-              }
-              authenticationController.onSuccessfulLogin(req, user.uid, function (err) {
-                if (err) {
-                  return done(err)
-                } else {
-                  winston.info('[sso-wechat-web] user:' + user.uid + ' is logged via wechat.(openid is ' + profile.openid + ' and nickname is ' + profile.nickname + ')')
-                  done(null, user)
+              // Update Avatar Picture while user log-in
+              user.getUserField(req.user.uid, ['picture', 'wxpic'], function(userData) {
+                // firstly, update wechat Avatar Url
+                user.setUserField(req.user.uid, 'wxpic', picture)
+
+                if (userData[0] === userData[1]) {
+                  // if user use the wechat avatar currently, we update it.
+                  user.setUserField(req.user.uid, 'picture', picture)
                 }
-              })
+                
+                // Require collection of email
+                if (email.endsWith('@wx.qq.com')) {
+                  req.session.registration = req.session.registration || {}
+                  req.session.registration.uid = user.uid
+                  req.session.registration.wxid = profile.openid
+                }
+                authenticationController.onSuccessfulLogin(req, user.uid, function (err) {
+                  if (err) {
+                    return done(err)
+                  } else {
+                    winston.info('[sso-wechat-web] user:' + user.uid + ' is logged via wechat.(openid is ' + profile.openid + ' and nickname is ' + profile.nickname + ')')
+                    done(null, user)
+                  }
+                })
+              })  
             })
           }
         }))
