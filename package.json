@@ -5,7 +5,7 @@
   "main": "library.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/a632079/nodebb-plugin-sso-wechat-web"
+    "url": "https://github.com/NodeBB-China/nodebb-plugin-sso-wechat-web"
   },
   "keywords": [
     "nodebb",
@@ -22,7 +22,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/a632079/nodebb-plugin-sso-wechat-web/issues"
+    "url": "https://github.com/NodeBB-China/nodebb-plugin-sso-wechat-web/issues"
   },
   "readme": "",
   "readmeFilename": "README.md",
