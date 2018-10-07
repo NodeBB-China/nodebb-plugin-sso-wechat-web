@@ -291,7 +291,7 @@ Wechat.init = function (data, callback) {
       service: '微信'
     })
   })
-  data.router.post('/deauth/wechat', data.middleware.requireUser, function (req, res, next) {
+  data.router.post('/deauth/wechat', [data.middleware.requireUser, data.middleware.applyCSRF], function (req, res, next) {
     Wechat.deleteUserData({
       uid: req.user.uid
     }, function (err, uid) {
