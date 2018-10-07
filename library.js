@@ -66,15 +66,15 @@ Wechat.getStrategy = function (strategies, callback) {
                 return done(err)
               }
               // Update Avatar Picture while user log-in
-              user.getUserField(req.user.uid, ['picture', 'wxpic'], function(userData) {
+              user.getUserField(user.uid, ['picture', 'wxpic'], function (userData) {
                 // firstly, update wechat Avatar Url
-                user.setUserField(req.user.uid, 'wxpic', picture)
+                user.setUserField(user.uid, 'wxpic', picture)
 
                 if (userData[0] === userData[1]) {
                   // if user use the wechat avatar currently, we update it.
-                  user.setUserField(req.user.uid, 'picture', picture)
+                  user.setUserField(user.uid, 'picture', picture)
                 }
-                
+
                 // Require collection of email
                 if (email.endsWith('@wx.qq.com')) {
                   req.session.registration = req.session.registration || {}
@@ -89,7 +89,7 @@ Wechat.getStrategy = function (strategies, callback) {
                     done(null, user)
                   }
                 })
-              })  
+              })
             })
           }
         }))
