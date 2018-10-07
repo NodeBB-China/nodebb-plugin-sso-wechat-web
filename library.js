@@ -61,18 +61,19 @@ Wechat.getStrategy = function (strategies, callback) {
           } else {
             const email = (profile.nickname ? profile.nickname : profile.openid) + '@wx.qq.com'
             const picture = profile.headimgurl.replace('http://', 'https://')
+            const User = user
             Wechat.login(profile.openid, profile.nickname, email, picture, accessToken, refreshToken, function (err, user) {
               if (err) {
                 return done(err)
               }
               // Update Avatar Picture while user log-in
-              user.getUserField(user.uid, ['picture', 'wxpic'], function (userData) {
+              User.getUserField(user.uid, ['picture', 'wxpic'], function (userData) {
                 // firstly, update wechat Avatar Url
-                user.setUserField(user.uid, 'wxpic', picture)
+                User.setUserField(user.uid, 'wxpic', picture)
 
                 if (userData[0] === userData[1]) {
                   // if user use the wechat avatar currently, we update it.
-                  user.setUserField(user.uid, 'picture', picture)
+                  User.setUserField(user.uid, 'picture', picture)
                 }
 
                 // Require collection of email
