@@ -45,7 +45,7 @@ Wechat.getStrategy = function (strategies, callback) {
                 return done(err)
               }
               if (res) {
-                return done(new Error('You have binded a WeChat account.If you want to bind another one ,please unbind your account.'), false)
+                return done('[[error:sso-multiple-association]]', false)
               } else {
                 winston.info('[SSO-WeChat-web]User is logged.Binding.')
                 user.setUserField(req.user.uid, 'wxid', profile.openid)
