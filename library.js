@@ -1,8 +1,8 @@
 'use strict'
 
-const user = require.parent.require('./user')
-const meta = require.parent.require('./meta')
-const db = require.parent.require('../src/database')
+const user = require.parent.require('./src/user')
+const meta = require.parent.require('./src/meta')
+const db = require.parent.require('./src/database')
 const passport = require.parent.require('passport')
 const PassportWechat = require('passport-wechat').Strategy
 // const fs = module.parent.require('fs')
@@ -17,7 +17,7 @@ const constants = Object.freeze({
     'route': '/plugins/sso-wechat'
   }
 })
-const authenticationController = module.parent.require('./controllers/authentication')
+const authenticationController = require.parent.require('./src/controllers/authentication')
 const Wechat = {}
 Wechat.appendUserHashWhitelist = function (data, callback) {
   data.whitelist.push('wxid')
