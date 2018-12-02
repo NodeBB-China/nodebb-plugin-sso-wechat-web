@@ -1,15 +1,15 @@
 'use strict'
 
-const user = module.parent.require('./user')
-const meta = module.parent.require('./meta')
-const db = module.parent.require('../src/database')
-const passport = module.parent.require('passport')
+const user = require.parent.require('./user')
+const meta = require.parent.require('./meta')
+const db = require.parent.require('../src/database')
+const passport = require.parent.require('passport')
 const PassportWechat = require('passport-wechat').Strategy
 // const fs = module.parent.require('fs')
 // const path = module.parent.require('path')
-const nconf = module.parent.require('nconf')
-const async = module.parent.require('async')
-const winston = module.parent.require('winston')
+const nconf = require.parent.require('nconf')
+const async = require.parent.require('async')
+const winston = require.parent.require('winston')
 const constants = Object.freeze({
   'name': '微信',
   'admin': {
