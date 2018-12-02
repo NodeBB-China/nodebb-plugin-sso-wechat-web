@@ -1,15 +1,15 @@
 'use strict'
 
-const user = require.parent.require('./src/user')
-const meta = require.parent.require('./src/meta')
-const db = require.parent.require('./src/database')
-const passport = require.parent.require('passport')
+const user = require.main.require('./src/user')
+const meta = require.main.require('./src/meta')
+const db = require.main.require('./src/database')
+const passport = require.main.require('passport')
 const PassportWechat = require('passport-wechat').Strategy
-// const fs = module.parent.require('fs')
-// const path = module.parent.require('path')
-const nconf = require.parent.require('nconf')
-const async = require.parent.require('async')
-const winston = require.parent.require('winston')
+// const fs = require.main.require('fs')
+// const path = require.main.require('path')
+const nconf = require.main.require('nconf')
+const async = require.main.require('async')
+const winston = require.main.require('winston')
 const constants = Object.freeze({
   'name': '微信',
   'admin': {
@@ -17,7 +17,7 @@ const constants = Object.freeze({
     'route': '/plugins/sso-wechat'
   }
 })
-const authenticationController = require.parent.require('./src/controllers/authentication')
+const authenticationController = require.main.require('./src/controllers/authentication')
 const Wechat = {}
 Wechat.appendUserHashWhitelist = function (data, callback) {
   data.whitelist.push('wxid')
